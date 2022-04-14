@@ -1,4 +1,5 @@
 # utilities which are not exposed to the user
+import datetime
 
 def readTime(s):
     if s:
