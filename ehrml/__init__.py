@@ -1,2 +1,2 @@
-from .data2obs import fromApi
-from .data2obs import fromRwb
+from .data2obs import fromLayered
+from .data2obs import fromFlat

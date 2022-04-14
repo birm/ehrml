@@ -3,7 +3,7 @@ import datetime
 import math
 from .utils import readTime
 
-def fromApi(config, data):
+def fromLayered(config, data):
     res = []
     for conf in config:
         all_relevant = []
@@ -28,7 +28,7 @@ def fromApi(config, data):
         res.extend(all_relevant)
     return res
 
-def fromRwb(config, data, time_limit=None):
+def fromFlat(config, data, time_limit=None):
     time_delimter = "_"
     time_ranges = ["00_08", "08_16", "16_MN"] # MUST be in order and equally spaced, occuping an entire day.
     hour_per_range = 24./len(time_ranges)
