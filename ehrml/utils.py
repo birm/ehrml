@@ -7,3 +7,5 @@ def readTime(s):
         return datetime.datetime.strptime(s, fs)
     else:
         return s
+
+truthy_values =  ['y', 'Y', 'true', 'YES', 'Yes', 'yes', 1, '1', '1.0', True, 1.0]

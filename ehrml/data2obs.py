@@ -33,12 +33,12 @@ def fromFlat(config, data, time_limit=None):
     time_ranges = ["00_08", "08_16", "16_MN"] # MUST be in order and equally spaced, occuping an entire day.
     hour_per_range = 24./len(time_ranges)
     # time override option to allow an override for time for testing purposes
-    time_limit = time_limit or math.ceil(datetime.datetime.now().hour / hour_per_range)
+    time_limit = time_limit or math.floor(datetime.datetime.now().hour / hour_per_range)
     res = []
     for i in range(time_limit):
         # the range to read and time to "write" for this range
         current_range = time_ranges[i]
-        write_time = datetime.datetime.now().replace(hour=int((i+1)*hour_per_range)-1, minute=59, second=59)
+        write_time = datetime.datetime.now().replace(hour=int((i+1)*hour_per_range)-1, minute=59, second=59, microsecond=0)
         for conf in config:
             # add the field to this range if it is timeless
             if conf.get('rwb_src') in data:

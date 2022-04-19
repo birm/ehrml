@@ -1,7 +1,5 @@
 import ehrml
-
-def test_nothing():
-    assert 0==0
+import datetime
 
 # test the flat with time utility
 def test_fromFlat():
@@ -23,3 +21,26 @@ def test_fromLayered():
     res = ehrml.fromLayered(configuration, data)
     print(res)
     assert len(res) == 4
+
+# test the observaton bin and reduction logic
+def test_binObs():
+    override_now = datetime.datetime(2022, 1, 2, 0, 0, 0)
+    time1 = datetime.datetime(2022, 1, 1, 14, 0, 0)
+    time2 = datetime.datetime(2022, 1, 1, 15, 0, 0)
+    time3 = datetime.datetime(2022, 1, 1, 23, 0, 0)
+    config = [{'rwb_src': 'binary', 'transformation' : 'binary'},
+              {'rwb_src':'missing', 'transformation':'none'},
+              {'rwb_src':'frequent', 'transformation': 'none'}]
+    observations = [
+        {'time': time1, 'value': True, 'field': 'binary'},
+        {'time': time2, 'value': False, 'field': 'binary'},
+        {'time': time1, 'value': 1., 'field': 'frequent'},
+        {'time': time2, 'value': 2., 'field': 'frequent'},
+        {'time': time3, 'value': 3., 'field': 'frequent'}]
+    res = ehrml.binObs(config, observations, 2, 8.0, now=override_now)
+    assert res[0].get('binary')
+    assert res[0].get('missing') is None
+    assert res[0].get('frequent') == 2
+    assert res[1].get('binary') == False
+    assert res[1].get('missing') is None
+    assert res[1].get('frequent') == 3
