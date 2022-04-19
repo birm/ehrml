@@ -44,3 +44,7 @@ def test_binObs():
     assert res[1].get('binary') == False
     assert res[1].get('missing') is None
     assert res[1].get('frequent') == 3
+
+# test the transformation
+def test_transform():
+    pass
