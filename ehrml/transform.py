@@ -28,10 +28,10 @@ def _sqrtHigh(value, mean, std, max, min):
 def _sqrtLow(value, mean, std, max, min):
     return (math.sqrt(value - min + 1) - mean) / std
 
-def _logHigh(value, mean, std, max, min):
+def _logLow(value, mean, std, max, min):
     return (math.log(value - min + 1) - mean) / std
 
-def _logLow(value, mean, std, max, min):
+def _logHigh(value, mean, std, max, min):
     return (math.log(max - value + 1) - mean) / std
 
 _bin_tx = {'binary': _binary, 'cutoffs': _cutoffs, 'categorical': _categorical}
@@ -42,11 +42,22 @@ def transform(config, binnedData):
     keyedConf = {x.get('rwb_src'): x for x in config}
     for b in binnedData:
         bRes = {}
-        for c in keyedConf:
-            if c.get('transformation', 'none') in _bin_tx:
-                # TODO -- how to use, handle
-                bRes[c] = _bin_tx(b[c], c.get('one_hot_vals'))
-            elif c.get('transformation', 'none') in _num_tx:
-                bRes[c] = _num_tx(b[c], float(c.get('mean')), float(c.get('std')), float(c.get('max')), float(c.get('min')))
+        for k, c in keyedConf.items():
+            try:
+                if c.get('transformation', 'none') in _bin_tx:
+                    bRes[k] = _bin_tx[c.get('transformation')](b[k], c.get('one_hot_vals'))
+                elif c.get('transformation', 'none') in _num_tx:
+                    if b[k]:
+                        pre_tx = float(b[k])
+                        if c.get('min') and c.get('max'):
+                            # set within [min,max]
+                            pre_tx = max(min(float(c.get('max')), pre_tx), float(c.get('min')))
+                        bRes[k] = _num_tx[c.get('transformation')](pre_tx, float(c.get('mean')), float(c.get('std')), float(c.get('max')), float(c.get('min')))
+                    else:
+                        bRes[k] = b[k]
+            except ValueError as e:
+                print(e)
+                # numerical error, manual 0
+                bRes[k] = 0
         res.append(bRes)
     return res

@@ -1,5 +1,7 @@
 import ehrml
+
 import datetime
+import math
 
 # test the flat with time utility
 def test_fromFlat():
@@ -47,4 +49,15 @@ def test_binObs():
 
 # test the transformation
 def test_transform():
-    pass
+    config = [{'rwb_src': 'binary', 'transformation' : 'binary'},
+              {'rwb_src':'missing', 'transformation':'z', 'mean': 1, 'std':1, 'max':2, 'min':0},
+              {'rwb_src':'frequent', 'transformation': 'log high', 'mean': math.e, 'std':1, 'max':math.e, 'min':0}]
+    binnedData = [{'binary': True, 'frequent': 1.0, 'missing': None}, {'binary': False, 'frequent': math.e, 'missing': None}]
+    res = ehrml.transform(config, binnedData)
+    print(res)
+    assert res[0].get('binary') == 1.0
+    assert res[1].get('binary') == 0.0
+    assert res[0].get('missing') is None
+    assert res[1].get('missing') is None
+    assert res[0].get('frequent') == -math.e + 1
+    assert res[1].get('frequent') == -math.e
