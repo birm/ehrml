@@ -51,8 +51,9 @@ def test_binObs():
 def test_transform():
     config = [{'rwb_src': 'binary', 'transformation' : 'binary'},
               {'rwb_src':'missing', 'transformation':'z', 'mean': 1, 'std':1, 'max':2, 'min':0},
-              {'rwb_src':'frequent', 'transformation': 'log high', 'mean': math.e, 'std':1, 'max':math.e, 'min':0}]
-    binnedData = [{'binary': True, 'frequent': 1.0, 'missing': None}, {'binary': False, 'frequent': math.e, 'missing': None}]
+              {'rwb_src':'frequent', 'transformation': 'log high', 'mean': math.e, 'std':1, 'max':math.e, 'min':0},
+              {'rwb_src':'categorical', 'transformation': 'categorical', 'one_hot_vals': '[["A"], ["B"], ["C"]]'}]
+    binnedData = [{'binary': True, 'frequent': 1.0, 'missing': None, 'categorical': 'A'}, {'binary': False, 'frequent': math.e, 'missing': None, 'categorical': 'B'}]
     res = ehrml.transform(config, binnedData)
     print(res)
     assert res[0].get('binary') == 1.0
@@ -61,3 +62,5 @@ def test_transform():
     assert res[1].get('missing') is None
     assert res[0].get('frequent') == -math.e + 1
     assert res[1].get('frequent') == -math.e
+    assert res[0].get('categorical') == [1, 0, 0]
+    assert res[1].get('categorical') == [0, 1, 0]

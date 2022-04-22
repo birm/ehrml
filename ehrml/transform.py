@@ -1,4 +1,5 @@
 import math
+import json
 
 from .utils import truthy_values
 
@@ -7,10 +8,27 @@ def _binary(value, one_hot_vals):
     return 1.0 if value in truthy_values else 0.0
 
 def _cutoffs(value, one_hot_vals):
-    pass
+    cutoffs = json.loads(one_hot_vals)
+    if value is None:
+        value = [0] * len(cutoffs)
+    else:
+        ov = value
+        new_value = [0] * len(cutoffs)
+        for c in cutoffs:
+            if value > c:
+                new_value = [0] * len(cutoffs)
+                new_value[cutoffs.index(c)] = 1
+        value = new_value
+    return value
 
 def _categorical(value, one_hot_vals):
-    pass
+    categories = json.loads(one_hot_vals)
+    if value is None:
+        value = [0] * len(categories)
+    else:
+        new_value = [1 if value in x else 0 for x in categories]
+        value = new_value
+    return value
 
 # numeric transformations
 def _zScore(value, mean, std, max, min):
