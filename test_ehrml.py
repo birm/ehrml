@@ -2,6 +2,7 @@ import ehrml
 
 import datetime
 import math
+import numpy
 
 # test the flat with time utility
 def test_fromFlat():
@@ -64,3 +65,17 @@ def test_transform():
     assert res[1].get('frequent') == -math.e
     assert res[0].get('categorical') == [1, 0, 0]
     assert res[1].get('categorical') == [0, 1, 0]
+
+def test_toNumpyRecord():
+    config = [{'rwb_src': 'binary', 'transformation' : 'binary', 'index':0},
+              {'rwb_src':'missing', 'transformation':'z', 'mean': 1, 'std':1, 'max':2, 'min':0, 'index':1},
+              {'rwb_src':'frequent', 'transformation': 'log high', 'mean': math.e, 'std':1, 'max':math.e, 'min':0, 'index':2},
+              {'rwb_src':'categorical', 'transformation': 'categorical', 'one_hot_vals': '[["A"], ["B"], ["C"]]', 'index':3}]
+    data = [{'binary': 1.0, 'missing': None, 'frequent': -math.e+1, 'categorical': [1, 0, 0]},
+            {'binary': 0.0, 'missing': 1, 'frequent': -math.e, 'categorical': [0, 1, 0]},
+            {}]
+    res = ehrml.toNumpyRecord(config, data, (3, 6), impute="locf")
+    print(res[1], [0.,1., -2.71828183 , 0.,1.,0.])
+    assert numpy.allclose(res[0], [1.,0.,-math.e + 1,1.,0.,0.])
+    assert numpy.allclose(res[1], [0.,1., -math.e, 0.,1.,0.])
+    assert numpy.allclose(res[2], [0.,1., -math.e, 0.,0.,0.])
