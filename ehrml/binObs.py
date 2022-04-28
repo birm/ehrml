@@ -4,6 +4,29 @@ import math
 from .utils import readTime, truthy_values
 
 def binObs(config, observations, numBins, binLength, now=None):
+    """Use configuration and observations to create a list of data for each bin.
+       Fields with the 'binary' as 'transformation' are collapsed such that any
+       true in the time range associated with the bin means the field is set to
+       true, otherwise false. Otherwise, the most recent value is used.
+
+    Args:
+        config:
+            list of dicts, each containing configuration for a field of interest.
+        observations:
+            A list of dicts representing observations, each with its value,
+            field, and time.
+        numBins:
+            The total number of bins to produce at the end
+        binLength:
+            The size of each bin in hours. Should evenly divide a day.
+        now (optional):
+            An override to the current time. Used primarily for testing.
+
+    Returns:
+        A list of dicts representing bins, each with values associated with the
+        time range that bin represents.
+
+    """
     res = []
     keyedConf = {x.get('rwb_src'): x for x in config}
     # for each bin time range

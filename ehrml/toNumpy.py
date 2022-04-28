@@ -2,6 +2,18 @@
 import numpy
 
 def _locf_impute(data):
+    """Impute data using the last observation carried forward method.
+       If the first value is None, it will be set to zero first.
+
+    Args:
+        data:
+            list of data in chronological order, where `None` represents missing
+            data.
+
+    Returns:
+        Data in the same format as the input, with `None` replaced.
+
+    """
     if data[0] is None:
         data[0] = 0
     data = [x if x is not None else data[i-1] for i, x in enumerate(data)]
@@ -9,11 +21,41 @@ def _locf_impute(data):
 
 
 def _none_impute(data):
+    """Do not impute data. Placeholder.
+
+    Args:
+        data:
+            list of data in chronological order, where `None` represents missing
+            data.
+
+    Returns:
+        The exact data from the input with no change.
+
+    """
     return data
 
 _imputation_options = {'none':_none_impute, 'locf': _locf_impute}
 
 def toNumpyRecord(config, data, shape, impute="locf"):
+    """Convert binned data into a numpy format, optionally imputing.
+
+    Args:
+        config:
+            list of dicts, each containing configuration for a field of interest.
+        data:
+            A list of dicts representing bins, each with values associated with
+            the time range that bin represents.
+        shape:
+            The desired shape of the numpy output, tuple (observations, indices)
+        impute:
+            A string representing which imputation method to use.
+            See `_imputation_options`.
+
+    Returns:
+        A numpy array where each column represents a variable index, and each
+        row represents an observation.
+
+    """
     res = numpy.zeros(shape)
     for c in config:
         d = [x.get(c.get('rwb_src'), None) for x in data]
@@ -34,6 +76,18 @@ def toNumpyRecord(config, data, shape, impute="locf"):
     return res
 
 def numpyRecordCollector(records):
+    """Collect multiple numpy arrays together.
+
+    Args:
+        records:
+            list of numpy arrays of the same shape, each representing a patient
+            or other entity of interest.
+    Returns:
+        A numpy 3d array, with the first dimension representing each record of
+        the input, the second dimension representing observations, and the third
+        dimension representing variable indices.
+
+    """
     x, y = records[0].shape
     res = numpy.zeros((len(records), x, y))
     for i in range(len(records)):

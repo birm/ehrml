@@ -4,6 +4,24 @@ import math
 from .utils import readTime
 
 def fromLayered(config, data):
+    """Use configuration to extract data from a layered format into a list of observations.
+
+    Args:
+        config:
+            list of dicts, each containing configuration for a field of interest.
+        data:
+            the layered data structure, a dict with keys matching config's
+            "api_parent" with values in a list. Values should be either directly
+            accessable from config's "api_src", with associated time in config's
+            "api_time_src", or alternatively by config's "api_from" where
+            the value associated with config's "api_by" matches config's
+            "api_src"
+
+    Returns:
+        A list of dicts representing observations, each with its value, field,
+            and time.
+
+    """
     res = []
     for conf in config:
         all_relevant = []
@@ -29,6 +47,25 @@ def fromLayered(config, data):
     return res
 
 def fromFlat(config, data, time_limit=None):
+    """Use configuration to extract data from a flat list of dicts, possibly
+       containing time related fields.
+
+    Args:
+        config:
+            list of dicts, each containing configuration for a field of interest.
+        data:
+            the flat data structure, a list of dicts matching either config's
+            "rwb_src" or the same with a time range asscoiated. (e.g.
+            Calcium_08_16 would mean calcium somwewhere between 08:00 and 16:00)
+        time_limit (optional):
+            An override to which time range in the day to read up to. This is a
+            testing override.
+
+    Returns:
+        A list of dicts representing observations, each with its value, field,
+            and time.
+
+    """
     time_delimter = "_"
     time_ranges = ["00_08", "08_16", "16_MN"] # MUST be in order and equally spaced, occuping an entire day.
     hour_per_range = 24./len(time_ranges)

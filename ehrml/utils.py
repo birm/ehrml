@@ -2,6 +2,14 @@
 import datetime
 
 def readTime(s):
+    """Read the time from a string in a particular format.
+
+    Args:
+        s: The representing datetime.
+
+    Returns:
+        A datetime object.
+    """
     if s:
         fs = "%Y-%m-%dT%H:%M:%S"
         return datetime.datetime.strptime(s, fs)

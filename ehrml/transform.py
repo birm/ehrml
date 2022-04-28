@@ -57,6 +57,27 @@ _bin_tx = {'binary': _binary, 'cutoffs': _cutoffs, 'categorical': _categorical}
 _num_tx = {'z': _zScore, 'low': _low, 'high': _high, 'sqrt low': _sqrtLow, 'sqrt high': _sqrtHigh, 'log low': _logLow, 'log high': _logHigh}
 
 def transform(config, binnedData):
+    """Perform numerical transformations and one hot encoding on binned data.
+       Some specific transformations are supported, see the source and `_num_tx`
+       for a list of supported transformations and their config names.
+       Similarly, some specific one hot encoding methods are supported, see the
+       source and `_bin_tx` for a list of supported encodigs and their config
+       names. NOTE that numerical errors in a transformation return a 0 for that
+       particular transformation instance.
+
+    Args:
+        config:
+            list of dicts, each containing configuration for a field of interest.
+        binnedData:
+            A list of dicts representing bins, each with values associated with
+            the time range that bin represents.
+
+    Returns:
+        A list of dicts representing bins, each with values associated with
+        the time range that bin represents, with values transformed or encoded
+        per config.
+
+    """
     res = []
     keyedConf = {x.get('rwb_src'): x for x in config}
     for b in binnedData:
