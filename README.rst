@@ -4,6 +4,9 @@ ehrml
 Electronic Medical Record Machine Learning Utilities for using Models
 with health data.
 
+.. image:: https://badge.fury.io/py/ehrml.svg
+    :target: https://badge.fury.io/py/ehrml
+
 Configuration:
 --------------
 

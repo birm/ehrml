@@ -2,6 +2,8 @@
 Electronic Medical Record Machine Learning
 Utilities for using Models with health data.
 
+[![PyPI version](https://badge.fury.io/py/ehrml.svg)](https://badge.fury.io/py/ehrml)
+
 ## Configuration:
 These utilities are very dependent on a particular configuration format. In python, it is a list of dicts, where each dict represents configuration for a particular field. The keys in this dict are as follows:
 

@@ -12,5 +12,5 @@ setup(
    author='Ryan Birmingham',
    author_email='rbirmin@emory.edu',
    packages=['ehrml'],
-   install_requires=[]
+   install_requires=['numpy']
 )
