@@ -3,3 +3,6 @@ init:
 
 test:
 	pytest
+
+dist:
+	python setup.py sdist

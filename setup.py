@@ -1,10 +1,10 @@
 from setuptools import setup
 
-with open("README.md", 'r') as f:
+with open("README.rst", 'r') as f:
     long_description = f.read()
 
 setup(
-   name='ehtml',
+   name='ehrml',
    version='1.0',
    description='Utilities for using Models with health data.',
    license="GPL-3",

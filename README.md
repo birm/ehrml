@@ -1,4 +1,5 @@
 # ehrml
+Electronic Medical Record Machine Learning
 Utilities for using Models with health data.
 
 ## Configuration:
