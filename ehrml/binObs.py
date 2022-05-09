@@ -32,7 +32,7 @@ def binObs(config, observations, numBins, binLength, now=None):
     # for each bin time range
     # set "now" to the end of the current time range
     set_hour = (binLength * (math.floor(datetime.datetime.now().hour/binLength)+1))
-    now = now or datetime.datetime.now().replace(hour=int(set_hour), minute=0, second=0, microsecond=0)
+    now = now or datetime.datetime.now().replace(hour=int(set_hour-1), minute=59, second=59, microsecond=0)
     ranges = [(now + datetime.timedelta(hours=i*binLength), now + datetime.timedelta(hours=(i+1)*binLength)) for i in range(0-numBins, 0)]
     for r in ranges:
         range_res = {}
