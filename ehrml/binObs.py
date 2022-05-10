@@ -37,7 +37,7 @@ def binObs(config, observations, numBins, binLength, now=None):
     for r in ranges:
         range_res = {}
         # grab all observations in this time
-        ranged_obs = [x for x in observations if x.get('time') and x['time'] > r[0] and x['time'] < r[1]]
+        ranged_obs = [x for x in observations if x.get('time') and x['time'] >= r[0] and x['time'] < r[1]]
         for c in keyedConf:
             relevant_obs = [x for x in ranged_obs if x.get('field') and x['field'] == c]
             # for each in conf, use conf to determine how to reduce

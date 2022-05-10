@@ -15,7 +15,7 @@ def _cutoffs(value, one_hot_vals):
         ov = value
         new_value = [0] * len(cutoffs)
         for c in cutoffs:
-            if value > c:
+            if float(value) > c:
                 new_value = [0] * len(cutoffs)
                 new_value[cutoffs.index(c)] = 1
         value = new_value

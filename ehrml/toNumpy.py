@@ -16,7 +16,9 @@ def _locf_impute(data):
     """
     if data[0] is None:
         data[0] = 0
-    data = [x if x is not None else data[i-1] for i, x in enumerate(data)]
+    for i in range(len(data)):
+        if data[i] is None:
+            data[i] = data[i-1]
     return data
 
 
