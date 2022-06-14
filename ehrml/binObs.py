@@ -36,6 +36,9 @@ def binObs(config, observations, numBins, binLength, now=None):
     ranges = [(now + datetime.timedelta(hours=i*binLength), now + datetime.timedelta(hours=(i+1)*binLength)) for i in range(0-numBins, 0)]
     for r in ranges:
         range_res = {}
+        # add the time range
+        range_res['_start_time'] = str(r[0])
+        range_res['_end_time'] = str(r[1])
         # grab all observations in this time
         ranged_obs = [x for x in observations if x.get('time') and x['time'] >= r[0] and x['time'] < r[1]]
         for c in keyedConf:
