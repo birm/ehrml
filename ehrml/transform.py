@@ -87,7 +87,7 @@ def transform(config, binnedData):
                     bRes[k] = _bin_tx[c.get('transformation')](b[k], c.get('one_hot_vals'))
                 elif c.get('transformation', 'none') in _num_tx:
                     if b[k]:
-                        pre_tx = float(b[k])
+                        pre_tx = float(b[k].split(" ")[0]) # handle things like 5.03 kg
                         if c.get('min') and c.get('max'):
                             # set within [min,max]
                             pre_tx = max(min(float(c.get('max')), pre_tx), float(c.get('min')))
