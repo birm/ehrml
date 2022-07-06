@@ -54,7 +54,7 @@ def test_transform():
               {'rwb_src':'missing', 'transformation':'z', 'mean': 1, 'std':1, 'max':2, 'min':0},
               {'rwb_src':'frequent', 'transformation': 'log high', 'mean': math.e, 'std':1, 'max':math.e, 'min':0},
               {'rwb_src':'categorical', 'transformation': 'categorical', 'one_hot_vals': '[["A"], ["B"], ["C"]]'}]
-    binnedData = [{'binary': True, 'frequent': 1.0, 'missing': None, 'categorical': 'A'}, {'binary': False, 'frequent': math.e, 'missing': None, 'categorical': 'B'}]
+    binnedData = [{'binary': True, 'frequent': "1.0 grams", 'missing': None, 'categorical': 'A'}, {'binary': False, 'frequent': math.e, 'missing': None, 'categorical': 'B'}]
     res = ehrml.transform(config, binnedData)
     print(res)
     assert res[0].get('binary') == 1.0
