@@ -32,7 +32,6 @@ def _categorical(value, one_hot_vals):
 
 # numeric transformations
 def _zScore(value, mean, std, max, min):
-    print(value, mean, std, max, min, (value - mean) / std)
     return (value - mean) / std
 
 def _high(value, mean, std, max, min):
