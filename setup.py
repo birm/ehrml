@@ -5,7 +5,7 @@ with open("README.rst", 'r') as f:
 
 setup(
    name='ehrml',
-   version='1.0.2',
+   version='1.0.3',
    description='Utilities for using Models with health data.',
    license="GPL-3",
    long_description=long_description,
